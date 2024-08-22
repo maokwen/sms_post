@@ -25,7 +25,7 @@ export default {
 		var response: Response;
 
 		if (request.method === "POST") {
-			let msg = <Message>JSON.parse(await request.json());
+			let msg = <Message>(await request.json());
 			response = Response.json(await post(msg, env));
 		} else if (request.method === "GET") {
 			response = Response.json(await list(env));
@@ -53,7 +53,7 @@ async function post(msg: Message, env: Env) {
 		+ " " + now.getHours() + ":" + now.getMinutes() + ":" + now.getSeconds();
 
 	const { results } = await env.DB.prepare(
-		"INSERT INTO msgs (date, sms_from, sms_text) VALUES (?, ?, ?)"
+		"INSERT INTO msgs (sms_date, sms_from, sms_text) VALUES (?, ?, ?)"
 	)
 		.bind(msg.date, msg.from, msg.text)
 		.run();
